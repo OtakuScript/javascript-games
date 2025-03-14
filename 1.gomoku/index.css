@@ -1,0 +1,23 @@
+.chess-table {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 50px auto;
+  width: 500px;
+  height: 500px;
+  border: 1px solid rgb(207, 188, 188);
+  background-color: rgb(247, 230, 183);
+}
+
+.chess-board {
+  width: 92%;
+  height: 92%;
+  /* 设置单元格之间的间距为0 */
+  border-collapse: collapse;
+}
+
+.chess-board td {
+  position: relative;
+  border: 1px solid black;
+}
