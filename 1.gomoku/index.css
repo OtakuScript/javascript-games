@@ -11,6 +11,7 @@
 }
 
 .chess-board {
+  position: relative;
   width: 92%;
   height: 92%;
   /* 设置单元格之间的间距为0 */
@@ -18,6 +19,18 @@
 }
 
 .chess-board td {
-  position: relative;
   border: 1px solid black;
+}
+
+.chess {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+}
+
+.white {
+  background-color: white;
+}
+.black {
+  background-color: black;
 }
