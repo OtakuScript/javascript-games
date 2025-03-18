@@ -14,7 +14,13 @@ let tdWidth; // 格子宽度
 let color = 'black'; // 棋子颜色
 let isGameOver = false; // 游戏是否结束
 
-function checkDirection(chessPoint, direction) {}
+function end(winnerChessArr) {
+  isGameOver = true;
+  for (let i = 0; i < winnerChessArr.length; i++) {
+    let chess = winnerChessArr[i];
+    $(`div[data-x="${chess.x}"][data-y="${chess.y}"]`).classList.add('winner');
+  }
+}
 
 function checkWinner(chessPoint) {
   let winChessArr = [chessPoint];
@@ -28,10 +34,12 @@ function checkWinner(chessPoint) {
 
   // 向各个方向判断：左右上下，左上，右上，左下，右下
   if (left) {
+    console.log('left');
     for (let i = 1; i < 5; i++) {
       let chess = chesses.find(item => {
+        let x = (parseFloat(chessPoint.x) - i * tdWidth).toFixed(2);
         return (
-          item.x === (chessPoint.x - i * tdWidth).toFixed(2) &&
+          item.x === x &&
           item.y === chessPoint.y &&
           item.color === chessPoint.color
         );
@@ -43,16 +51,129 @@ function checkWinner(chessPoint) {
     if (winChessArr.length === 5) {
       return winChessArr;
     }
-  } else if (right) {
-  } else if (up) {
-  } else if (down) {
-  } else if (left && up) {
-  } else if (right && up) {
-  } else if (left && down) {
-  } else if (right && down) {
-  } else {
-    return false;
   }
+  if (right) {
+    console.log('right');
+    for (let i = 1; i < 5; i++) {
+      let chess = chesses.find(item => {
+        let x = (parseFloat(chessPoint.x) + i * tdWidth).toFixed(2);
+        return (
+          item.x === x &&
+          item.y === chessPoint.y &&
+          item.color === chessPoint.color
+        );
+      });
+      if (chess) {
+        winChessArr.push(chess);
+      }
+    }
+    if (winChessArr.length === 5) {
+      return winChessArr;
+    }
+  }
+  if (up) {
+    console.log('up');
+    for (let i = 1; i < 5; i++) {
+      let chess = chesses.find(item => {
+        let y = (parseFloat(chessPoint.y) - i * tdWidth).toFixed(2);
+        return (
+          item.x === chessPoint.x &&
+          item.y === y &&
+          item.color === chessPoint.color
+        );
+      });
+      if (chess) {
+        winChessArr.push(chess);
+      }
+    }
+    if (winChessArr.length === 5) {
+      return winChessArr;
+    }
+  }
+  if (down) {
+    console.log('down');
+    for (let i = 1; i < 5; i++) {
+      let chess = chesses.find(item => {
+        let y = (parseFloat(chessPoint.y) + i * tdWidth).toFixed(2);
+        return (
+          item.x === chessPoint.x &&
+          item.y === y &&
+          item.color === chessPoint.color
+        );
+      });
+      if (chess) {
+        winChessArr.push(chess);
+      }
+    }
+    if (winChessArr.length === 5) {
+      return winChessArr;
+    }
+  }
+  if (left && up) {
+    console.log('left up');
+    for (let i = 1; i < 5; i++) {
+      let chess = chesses.find(item => {
+        let x = (parseFloat(chessPoint.x) - i * tdWidth).toFixed(2);
+        let y = (parseFloat(chessPoint.y) - i * tdWidth).toFixed(2);
+        return item.x === x && item.y === y && item.color === chessPoint.color;
+      });
+      if (chess) {
+        winChessArr.push(chess);
+      }
+    }
+    if (winChessArr.length === 5) {
+      return winChessArr;
+    }
+  }
+  if (right && up) {
+    console.log('right up');
+    for (let i = 1; i < 5; i++) {
+      let chess = chesses.find(item => {
+        let x = (parseFloat(chessPoint.x) + i * tdWidth).toFixed(2);
+        let y = (parseFloat(chessPoint.y) - i * tdWidth).toFixed(2);
+        return item.x === x && item.y === y && item.color === chessPoint.color;
+      });
+      if (chess) {
+        winChessArr.push(chess);
+      }
+    }
+    if (winChessArr.length === 5) {
+      return winChessArr;
+    }
+  }
+  if (left && down) {
+    console.log('left down');
+    for (let i = 1; i < 5; i++) {
+      let chess = chesses.find(item => {
+        let x = (parseFloat(chessPoint.x) - i * tdWidth).toFixed(2);
+        let y = (parseFloat(chessPoint.y) + i * tdWidth).toFixed(2);
+        return item.x === x && item.y === y && item.color === chessPoint.color;
+      });
+      if (chess) {
+        winChessArr.push(chess);
+      }
+    }
+    if (winChessArr.length === 5) {
+      return winChessArr;
+    }
+  }
+  if (right && down) {
+    console.log('right down');
+    for (let i = 1; i < 5; i++) {
+      let chess = chesses.find(item => {
+        let x = (parseFloat(chessPoint.x) + i * tdWidth).toFixed(2);
+        let y = (parseFloat(chessPoint.y) + i * tdWidth).toFixed(2);
+        return item.x === x && item.y === y && item.color === chessPoint.color;
+      });
+      if (chess) {
+        winChessArr.push(chess);
+      }
+    }
+    if (winChessArr.length === 5) {
+      return winChessArr;
+    }
+  }
+  return false;
 }
 
 function paintChess(chessPoint) {
@@ -81,10 +202,64 @@ function checkMove(chessPoint) {
     chesses.push(chessPoint);
     paintChess(chessPoint);
     let isHasWinner = checkWinner(chessPoint);
-    console.log('isHasWinner', isHasWinner);
     if (isHasWinner && isHasWinner.length === 5) {
-      alert('winner');
+      end(isHasWinner);
     }
+  }
+}
+
+function handleMove(e) {
+  if (isGameOver) {
+    alert('Restart a new game?');
+    isGameOver = false;
+    chesses.length = 0;
+    color = 'black';
+    doms.chessBoard.removeEventListener('click', handleMove);
+    initChessBoard();
+    return;
+  }
+  if (e.target.nodeName === 'TD') {
+    let row = parseInt(e.target.dataset.row);
+    let col = parseInt(e.target.dataset.col);
+    let chessPoint;
+    let mouseX = e.offsetX;
+    let mouseY = e.offsetY;
+
+    // 取格子左上方顶点
+    if (mouseX < tdWidth / 2 && mouseY < tdWidth / 2) {
+      let leftTop = {
+        x: col * tdWidth,
+        y: row * tdWidth,
+      };
+      chessPoint = leftTop;
+    }
+    // 取格子右上方顶点
+    if (mouseX > tdWidth / 2 && mouseY < tdWidth / 2) {
+      let rightTop = {
+        x: (col + 1) * tdWidth,
+        y: row * tdWidth,
+      };
+      chessPoint = rightTop;
+    }
+    // 取格子右下方顶点
+    if (mouseX > tdWidth / 2 && mouseY > tdWidth / 2) {
+      let rightBottom = {
+        x: (col + 1) * tdWidth,
+        y: (row + 1) * tdWidth,
+      };
+      chessPoint = rightBottom;
+    }
+    // 取格子左下方顶点
+    if (mouseX < tdWidth / 2 && mouseY > tdWidth / 2) {
+      let leftBottom = {
+        x: col * tdWidth,
+        y: (row + 1) * tdWidth,
+      };
+      chessPoint = leftBottom;
+    }
+    chessPoint.x = chessPoint.x.toFixed(2);
+    chessPoint.y = chessPoint.y.toFixed(2);
+    checkMove(chessPoint);
   }
 }
 
@@ -102,52 +277,7 @@ function initChessBoard() {
   }
   doms.chessBoard.innerHTML = rows;
   tdWidth = (doms.chessBoard.clientWidth / 14).toFixed(2);
-  doms.chessBoard.addEventListener('click', e => {
-    if (e.target.nodeName === 'TD') {
-      let row = parseInt(e.target.dataset.row);
-      let col = parseInt(e.target.dataset.col);
-      let chessPoint;
-      let mouseX = e.offsetX;
-      let mouseY = e.offsetY;
-
-      // 取格子左上方顶点
-      if (mouseX < tdWidth / 2 && mouseY < tdWidth / 2) {
-        let leftTop = {
-          x: col * tdWidth,
-          y: row * tdWidth,
-        };
-        chessPoint = leftTop;
-      }
-      // 取格子右上方顶点
-      if (mouseX > tdWidth / 2 && mouseY < tdWidth / 2) {
-        let rightTop = {
-          x: (col + 1) * tdWidth,
-          y: row * tdWidth,
-        };
-        chessPoint = rightTop;
-      }
-      // 取格子右下方顶点
-      if (mouseX > tdWidth / 2 && mouseY > tdWidth / 2) {
-        let rightBottom = {
-          x: (col + 1) * tdWidth,
-          y: (row + 1) * tdWidth,
-        };
-        chessPoint = rightBottom;
-      }
-      // 取格子左下方顶点
-      if (mouseX < tdWidth / 2 && mouseY > tdWidth / 2) {
-        let leftBottom = {
-          x: col * tdWidth,
-          y: (row + 1) * tdWidth,
-        };
-        chessPoint = leftBottom;
-      }
-      chessPoint.x = chessPoint.x.toFixed(2);
-      chessPoint.y = chessPoint.y.toFixed(2);
-      // console.log(chessPoint);
-      checkMove(chessPoint);
-    }
-  });
+  doms.chessBoard.addEventListener('click', handleMove);
 }
 
 function main() {

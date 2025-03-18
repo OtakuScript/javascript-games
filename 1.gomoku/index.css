@@ -34,3 +34,6 @@
 .black {
   background-color: black;
 }
+.winner {
+  border: violet 2px solid;
+}
